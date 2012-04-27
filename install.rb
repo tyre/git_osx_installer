@@ -23,6 +23,12 @@ def backup_and_rm_ssh
   system("mkdir key_backup && cp id_rsa* key_backup && rm id_rsa*")
 end
 
+def generate_ssh_keys
+  puts "What is the email address of your GitHub account?"
+  email = gets.chomp
+  stdout, stderr, status = capture("ssh-keygen -t rsa -C \'#{email}\'")
+end
+
 stdout, stderr, status = capture("git --version")
 unless stdout =~ /git version (.*)/
   puts "You don't seem to have git installed. Installing..."
