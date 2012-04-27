@@ -26,7 +26,7 @@ end
 def generate_ssh_keys
   puts "What is the email address of your GitHub account?"
   email = gets.chomp
-  stdout, stderr, status = capture("ssh-keygen -t rsa -C \'#{email}\'")
+  system("ssh-keygen -t rsa -C \'#{email}\'")
 end
 
 stdout, stderr, status = capture("git --version")
