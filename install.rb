@@ -23,10 +23,27 @@ def backup_and_rm_ssh
   system("mkdir key_backup && cp id_rsa* key_backup && rm id_rsa*")
 end
 
+def output_ssh_to_github
+  puts "Alright. Now that that's finished, you need to upload the key to your github account."
+  puts "Go to github.com, click on account settings in the upper right hand corner."
+  puts "Next, select 'SSH Keys' on the left hand side and create a new one with 'Add SSH key'."
+  puts "Name it whatever you want. When you next hit enter on the command line, you'll have the SSH key copied to your clipboard."
+end
+  
+def add_key_to_github
+  output_ssh_instructions
+  gets
+  system("cat ~/.ssh/id_rsa.pub | pbcopy")
+  puts "Paste into github."
+end
+
 def generate_ssh_keys
   puts "What is the email address of your GitHub account?"
-  email = gets.chomp
-  stdout, stderr, status = capture("ssh-keygen -t rsa -C \'#{email}\'")
+  $email = gets.chomp
+  stdout, stderr, status = capture("ssh-keygen -t rsa -C \'#{$email}\'")
+  if status == 0
+    add_key_to_github
+  end
 end
 
 stdout, stderr, status = capture("git --version")
